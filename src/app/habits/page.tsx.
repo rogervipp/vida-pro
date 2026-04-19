@@ -1,48 +1,22 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function HabitsPage() {
-  const [habits, setHabits] = useState([
-    { id: 1, name: "Treino na Academia", done: false },
-    { id: 2, name: "Leitura Técnica Energisa", done: false },
-    { id: 3, name: "Beber 3L de Água", done: true }
-  ]);
-
   return (
-    <div style={{ backgroundColor: '#09090b', minHeight: '100vh', color: 'white', padding: '20px', fontFamily: 'sans-serif' }}>
+    <div style={{ backgroundColor: '#09090b', minHeight: '100vh', color: 'white', padding: '40px', textAlign: 'center', fontFamily: 'sans-serif' }}>
+      <h1 style={{ color: '#3b82f6' }}>Vida Pro - Hábitos</h1>
+      <p>Rogério, o sistema está online! 🚀</p>
+      <div style={{ marginTop: '20px', padding: '20px', border: '1px solid #27272a', borderRadius: '15px', backgroundColor: '#18181b' }}>
+        <p>• Academia [ ]</p>
+        <p>• Leitura [ ]</p>
+        <p>• Trabalho [ ]</p>
+      </div>
       <button 
         onClick={() => window.location.href = '/'}
-        style={{ background: '#18181b', border: '1px solid #27272a', color: 'white', padding: '10px 15px', borderRadius: '10px', marginBottom: '20px', cursor: 'pointer' }}
+        style={{ marginTop: '30px', padding: '10px 20px', borderRadius: '8px', border: 'none', backgroundColor: '#3b82f6', color: 'white', fontWeight: 'bold' }}
       >
-        ← Voltar
+        VOLTAR PARA HOME
       </button>
-
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>Meus Hábitos</h1>
-      <p style={{ color: '#71717a', fontSize: '14px', marginBottom: '30px' }}>Rogério, foco total na missão!</p>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        {habits.map(habit => (
-          <div 
-            key={habit.id}
-            style={{ 
-              backgroundColor: '#18181b', 
-              padding: '20px', 
-              borderRadius: '15px', 
-              border: habit.done ? '1px solid #22c55e' : '1px solid #27272a', 
-              display: 'flex', 
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            <span style={{ textDecoration: habit.done ? 'line-through' : 'none', color: habit.done ? '#71717a' : 'white' }}>
-              {habit.name}
-            </span>
-            <span style={{ color: habit.done ? '#22c55e' : '#a855f7', fontWeight: 'bold' }}>
-              {habit.done ? '✓' : '●'}
-            </span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
