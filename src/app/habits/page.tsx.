@@ -1,84 +1,135 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import {
+  BookOpen, Bot, Dumbbell, Flame, RefreshCw, Salad, Sparkles,
+  Target, TrendingDown, TrendingUp, Wallet, Zap, Trophy, Home
+} from "lucide-react";
 
-import { useState } from "react";
-import DashboardLayout from "../components/DashboardLayout";
-import { CheckCircle2, Circle, ArrowLeft, Plus } from "lucide-react";
-import Link from "next/link";
+const MOTIVATIONAL_PHRASES = [
+  "Cada hábito construído é um tijolo na sua melhor versão.",
+  "Consistência supera intensidade. Continue!",
+  "Seu futuro eu vai agradecer pelo esforço de hoje.",
+  "Progresso, não perfeição. Um dia de cada vez.",
+  "Você já está à frente de quem não começou.",
+];
 
-export default function HabitsPage() {
-  // Dados iniciais de teste (Mock)
-  const [habits, setHabits] = useState([
-    { id: 1, name: "Treino de Força", done: true, xp: 20 },
-    { id: 2, name: "Beber 3L de Água", done: false, xp: 10 },
-    { id: 3, name: "Leitura Técnica (30 min)", done: false, xp: 15 },
-    { id: 4, name: "Organizar Agenda Amanhã", done: false, xp: 10 },
-  ]);
+export default function HomePage() {
+  const [mounted, setMounted] = useState(false);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [insight, setInsight] = useState("");
 
-  const toggleHabit = (id: number) => {
-    setHabits(habits.map(h => 
-      h.id === id ? { ...h, done: !h.done } : h
-    ));
+  useEffect(() => {
+    setMounted(true);
+    setPhraseIndex(Math.floor(Math.random() * MOTIVATIONAL_PHRASES.length));
+  }, []);
+
+  if (!mounted) return null;
+
+  const greeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return "Bom dia";
+    if (h < 18) return "Boa tarde";
+    return "Boa noite";
   };
 
-  const completedCount = habits.filter(h => h.done).length;
-
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header com Voltar */}
-        <div className="flex items-center justify-between">
-          <Link href="/" className="text-zinc-500 hover:text-white flex items-center gap-2 transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Voltar</span>
-          </Link>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-xl transition-all">
-            <Plus className="w-5 h-5" />
-          </button>
-        </div>
-
+    <div className="min-h-screen bg-[#09090b] text-white p-4 pb-28 font-sans">
+      {/* Header */}
+      <div className="flex justify-between items-start mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-white">Hábitos</h1>
-          <p className="text-zinc-500 text-sm mt-1">
-            {completedCount} de {habits.length} tarefas concluídas hoje
-          </p>
+          <h1 className="text-2xl font-bold">{greeting()}, Rogério! 👋</h1>
+          <p className="text-gray-400 text-sm mt-1">{MOTIVATIONAL_PHRASES[phraseIndex]}</p>
         </div>
-
-        {/* Lista de Hábitos */}
-        <div className="space-y-3">
-          {habits.map((habit) => (
-            <div 
-              key={habit.id}
-              onClick={() => toggleHabit(habit.id)}
-              className={`flex items-center justify-between p-5 rounded-2xl border transition-all cursor-pointer ${
-                habit.done 
-                ? 'bg-blue-600/10 border-blue-500/30' 
-                : 'bg-[#09090b] border-zinc-800'
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                {habit.done ? (
-                  <CheckCircle2 className="w-6 h-6 text-blue-500" />
-                ) : (
-                  <Circle className="w-6 h-6 text-zinc-700" />
-                )}
-                <span className={`font-medium ${habit.done ? 'text-zinc-400 line-through' : 'text-white'}`}>
-                  {habit.name}
-                </span>
-              </div>
-              <div className="text-[10px] font-bold text-zinc-600 uppercase bg-zinc-900 px-2 py-1 rounded-md">
-                +{habit.xp} XP
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Dica de Consistência */}
-        <div className="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800 border-dashed text-center">
-          <p className="text-xs text-zinc-500 italic">
-            "A repetição cria o mestre. Não quebre a corrente hoje!"
-          </p>
+        <div className="flex flex-col items-end gap-2">
+           <div className="bg-blue-600 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-[0_0_10px_rgba(37,99,235,0.4)]">
+             <Sparkles size={14} /> Nível 12
+           </div>
+           <div className="bg-zinc-800 border border-zinc-700 px-3 py-1 rounded-full text-xs font-bold text-yellow-500 flex items-center gap-1">
+             <Zap size={14} fill="currentColor" /> 1.250 moedas
+           </div>
         </div>
       </div>
-    </DashboardLayout>
+
+      {/* XP Progress */}
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-6">
+        <div className="flex justify-between text-xs mb-2 text-zinc-400">
+          <span>PROGRESSO DE XP</span>
+          <span>850 / 1000 XP</span>
+        </div>
+        <div className="w-full bg-zinc-800 h-2.5 rounded-full overflow-hidden">
+          <div className="bg-blue-500 h-full w-[85%] rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div>
+        </div>
+      </div>
+
+      {/* AI Insight Card */}
+      <div className="bg-gradient-to-br from-blue-900/30 to-zinc-900 border border-blue-500/20 rounded-xl p-5 mb-6">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center shrink-0">
+            <Bot size={24} className="text-blue-400" />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-blue-400 mb-1 tracking-wider uppercase text-[10px]">Insight do Jarvis</p>
+            <p className="text-sm text-zinc-200 leading-relaxed italic">
+              {insight || "Rogério, você está com 85% de frequência nos treinos. Se mantiver hoje, subirá para o Nível 13!"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-4 mb-8">
+        {[
+          { label: "Hábitos Hoje", val: "6/8", icon: Target, color: "text-purple-400", sub: "75% concluído" },
+          { label: "Saldo do Mês", val: "R$ 1.250", icon: Wallet, color: "text-green-400", sub: "+ R$ 200 hoje" },
+          { label: "Treino de Hoje", val: "Peito/Tríceps", icon: Dumbbell, color: "text-blue-400", sub: "Pronto para iniciar" },
+          { label: "Refeições", val: "1.400 kcal", icon: Salad, color: "text-emerald-400", sub: "Meta: 2.200 kcal" }
+        ].map((item, i) => (
+          <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-lg">
+            <item.icon className={`${item.color} mb-2`} size={20} />
+            <p className="text-[10px] text-zinc-500 font-bold uppercase">{item.label}</p>
+            <h3 className="text-lg font-bold mt-1">{item.val}</h3>
+            <p className="text-[10px] text-zinc-400 mt-1">{item.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick Actions */}
+      <h2 className="text-[10px] font-black text-zinc-500 mb-3 uppercase tracking-[0.2em]">Acesso Rápido</h2>
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        {[
+          { icon: Target, label: "Hábitos", color: "bg-purple-500/10 text-purple-400" },
+          { icon: Wallet, label: "Finanças", color: "bg-green-500/10 text-green-400" },
+          { icon: Dumbbell, label: "Academia", color: "bg-blue-500/10 text-blue-400" },
+          { icon: Salad, label: "Dieta", color: "bg-emerald-500/10 text-emerald-400" },
+          { icon: Flame, label: "Foco", color: "bg-orange-500/10 text-orange-400" },
+          { icon: BookOpen, label: "Estudo", color: "bg-cyan-500/10 text-cyan-400" }
+        ].map((btn, i) => (
+          <button key={i} className={`${btn.color} rounded-xl p-4 border border-white/5 flex flex-col items-center gap-2 active:scale-95 transition-all`}>
+            <btn.icon size={20} />
+            <span className="text-[10px] font-bold">{btn.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Menu Inferior Fixo */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-zinc-800 p-4 flex justify-around items-center">
+        <button className="flex flex-col items-center text-blue-500 scale-110">
+          <Home size={22} />
+          <span className="text-[10px] mt-1 font-bold">Home</span>
+        </button>
+        <button className="flex flex-col items-center text-zinc-500" onClick={() => window.location.href='/habits'}>
+          <Target size={22} />
+          <span className="text-[10px] mt-1">Hábitos</span>
+        </button>
+        <button className="flex flex-col items-center text-zinc-500">
+          <Trophy size={22} />
+          <span className="text-[10px] mt-1">Metas</span>
+        </button>
+        <button className="flex flex-col items-center text-zinc-500">
+          <Bot size={22} />
+          <span className="text-[10px] mt-1">Jarvis</span>
+        </button>
+      </nav>
+    </div>
   );
 }
