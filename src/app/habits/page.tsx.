@@ -1,0 +1,84 @@
+"use client";
+
+import { useState } from "react";
+import DashboardLayout from "../components/DashboardLayout";
+import { CheckCircle2, Circle, ArrowLeft, Plus } from "lucide-react";
+import Link from "next/link";
+
+export default function HabitsPage() {
+  // Dados iniciais de teste (Mock)
+  const [habits, setHabits] = useState([
+    { id: 1, name: "Treino de Força", done: true, xp: 20 },
+    { id: 2, name: "Beber 3L de Água", done: false, xp: 10 },
+    { id: 3, name: "Leitura Técnica (30 min)", done: false, xp: 15 },
+    { id: 4, name: "Organizar Agenda Amanhã", done: false, xp: 10 },
+  ]);
+
+  const toggleHabit = (id: number) => {
+    setHabits(habits.map(h => 
+      h.id === id ? { ...h, done: !h.done } : h
+    ));
+  };
+
+  const completedCount = habits.filter(h => h.done).length;
+
+  return (
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Header com Voltar */}
+        <div className="flex items-center justify-between">
+          <Link href="/" className="text-zinc-500 hover:text-white flex items-center gap-2 transition-colors">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Voltar</span>
+          </Link>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-xl transition-all">
+            <Plus className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div>
+          <h1 className="text-3xl font-bold text-white">Hábitos</h1>
+          <p className="text-zinc-500 text-sm mt-1">
+            {completedCount} de {habits.length} tarefas concluídas hoje
+          </p>
+        </div>
+
+        {/* Lista de Hábitos */}
+        <div className="space-y-3">
+          {habits.map((habit) => (
+            <div 
+              key={habit.id}
+              onClick={() => toggleHabit(habit.id)}
+              className={`flex items-center justify-between p-5 rounded-2xl border transition-all cursor-pointer ${
+                habit.done 
+                ? 'bg-blue-600/10 border-blue-500/30' 
+                : 'bg-[#09090b] border-zinc-800'
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                {habit.done ? (
+                  <CheckCircle2 className="w-6 h-6 text-blue-500" />
+                ) : (
+                  <Circle className="w-6 h-6 text-zinc-700" />
+                )}
+                <span className={`font-medium ${habit.done ? 'text-zinc-400 line-through' : 'text-white'}`}>
+                  {habit.name}
+                </span>
+              </div>
+              <div className="text-[10px] font-bold text-zinc-600 uppercase bg-zinc-900 px-2 py-1 rounded-md">
+                +{habit.xp} XP
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Dica de Consistência */}
+        <div className="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800 border-dashed text-center">
+          <p className="text-xs text-zinc-500 italic">
+            "A repetição cria o mestre. Não quebre a corrente hoje!"
+          </p>
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+}
