@@ -1,41 +1,48 @@
 "use client";
 import React, { useState } from 'react';
-// Importando apenas o necessário para não dar erro
-import { ChevronLeft, Check, Target } from 'lucide-react';
 
 export default function HabitsPage() {
   const [habits, setHabits] = useState([
     { id: 1, name: "Treino na Academia", done: false },
-    { id: 2, name: "Leitura Técnica", done: false },
+    { id: 2, name: "Leitura Técnica Energisa", done: false },
+    { id: 3, name: "Beber 3L de Água", done: true }
   ]);
 
   return (
-    <div style={{ backgroundColor: '#09090b', minHeight: '100vh', color: 'white', padding: '20px' }}>
-      {/* Botão de Voltar */}
+    <div style={{ backgroundColor: '#09090b', minHeight: '100vh', color: 'white', padding: '20px', fontFamily: 'sans-serif' }}>
       <button 
         onClick={() => window.location.href = '/'}
-        style={{ background: '#18181b', border: '1px solid #27272a', color: 'white', padding: '10px', borderRadius: '10px', marginBottom: '20px' }}
+        style={{ background: '#18181b', border: '1px solid #27272a', color: 'white', padding: '10px 15px', borderRadius: '10px', marginBottom: '20px', cursor: 'pointer' }}
       >
-        <ChevronLeft size={20} />
+        ← Voltar
       </button>
 
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Meus Hábitos</h1>
+      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>Meus Hábitos</h1>
+      <p style={{ color: '#71717a', fontSize: '14px', marginBottom: '30px' }}>Rogério, foco total na missão!</p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         {habits.map(habit => (
           <div 
             key={habit.id}
-            style={{ backgroundColor: '#18181b', padding: '20px', borderRadius: '15px', border: '1px solid #27272a', display: 'flex', justifyContent: 'space-between' }}
+            style={{ 
+              backgroundColor: '#18181b', 
+              padding: '20px', 
+              borderRadius: '15px', 
+              border: habit.done ? '1px solid #22c55e' : '1px solid #27272a', 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
           >
-            <span>{habit.name}</span>
-            <Target size={20} color="#a855f7" />
+            <span style={{ textDecoration: habit.done ? 'line-through' : 'none', color: habit.done ? '#71717a' : 'white' }}>
+              {habit.name}
+            </span>
+            <span style={{ color: habit.done ? '#22c55e' : '#a855f7', fontWeight: 'bold' }}>
+              {habit.done ? '✓' : '●'}
+            </span>
           </div>
         ))}
       </div>
-      
-      <p style={{ marginTop: '30px', color: '#71717a', fontSize: '12px', textAlign: 'center' }}>
-        Jarvis: "Mantenha o foco, Rogério!"
-      </p>
     </div>
   );
 }
